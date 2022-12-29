@@ -7,12 +7,12 @@ namespace Data;
 
     public class AplicationContext: DbContext
     {
-       /* public AplicationContext(DbContextOptions<AplicationContext> options) : base(options)
+        public AplicationContext(DbContextOptions<AplicationContext> options) : base(options)
         {
         
-        }*/
-       protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
-           => optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=tiraet2;Username=postgres;Password=1");
+        }
+       /*protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+           => optionsBuilder.UseNpgsql("Host=localhost;Port=5432;Database=tiraet2;Username=postgres;Password=1");*/
     
        
        public DbSet<Card> Cards { get; set; }

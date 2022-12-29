@@ -24,32 +24,29 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Models.Card", b =>
                 {
-                    b.Property<long>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("bigint");
-
-                    NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
                     b.Property<long>("PersonId")
                         .HasColumnType("bigint");
 
-                    b.HasKey("Id");
+                    b.Property<long>("DiscontId")
+                        .HasColumnType("bigint");
 
-                    b.HasIndex("PersonId");
+                    b.Property<long>("Id")
+                        .HasColumnType("bigint");
+
+                    b.HasKey("PersonId");
+
+                    b.HasIndex("DiscontId");
 
                     b.ToTable("Cards");
                 });
 
-            modelBuilder.Entity("Data.Models.Discont", b =>
+            modelBuilder.Entity("Data.Models.Discount", b =>
                 {
                     b.Property<long>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("bigint");
 
                     NpgsqlPropertyBuilderExtensions.UseIdentityByDefaultColumn(b.Property<long>("Id"));
-
-                    b.Property<long?>("CardId")
-                        .HasColumnType("bigint");
 
                     b.Property<double>("Value")
                         .HasColumnType("double precision");
@@ -60,9 +57,7 @@ namespace Data.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("CardId");
-
-                    b.ToTable("Disconts");
+                    b.ToTable("Discounts");
                 });
 
             modelBuilder.Entity("Data.Models.MailToken", b =>
@@ -92,6 +87,9 @@ namespace Data.Migrations
             modelBuilder.Entity("Data.Models.Person", b =>
                 {
                     b.Property<long>("Id")
+                        .HasColumnType("bigint");
+
+                    b.Property<long>("CardId")
                         .HasColumnType("bigint");
 
                     b.Property<string>("Fio")
@@ -151,20 +149,21 @@ namespace Data.Migrations
 
             modelBuilder.Entity("Data.Models.Card", b =>
                 {
-                    b.HasOne("Data.Models.Person", "Person")
+                    b.HasOne("Data.Models.Discount", "Discount")
                         .WithMany("Cards")
-                        .HasForeignKey("PersonId")
+                        .HasForeignKey("DiscontId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.Navigation("Person");
-                });
+                    b.HasOne("Data.Models.Person", "Person")
+                        .WithOne("Card")
+                        .HasForeignKey("Data.Models.Card", "PersonId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
 
-            modelBuilder.Entity("Data.Models.Discont", b =>
-                {
-                    b.HasOne("Data.Models.Card", null)
-                        .WithMany("Disconts")
-                        .HasForeignKey("CardId");
+                    b.Navigation("Discount");
+
+                    b.Navigation("Person");
                 });
 
             modelBuilder.Entity("Data.Models.MailToken", b =>
@@ -189,14 +188,15 @@ namespace Data.Migrations
                     b.Navigation("User");
                 });
 
-            modelBuilder.Entity("Data.Models.Card", b =>
+            modelBuilder.Entity("Data.Models.Discount", b =>
                 {
-                    b.Navigation("Disconts");
+                    b.Navigation("Cards");
                 });
 
             modelBuilder.Entity("Data.Models.Person", b =>
                 {
-                    b.Navigation("Cards");
+                    b.Navigation("Card")
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("Data.Models.User", b =>

@@ -5,7 +5,7 @@ namespace Repo.Interfaces;
 
 public interface IDiscountService
 {
-    Task<Discount> Add(string name, double value);
+    Task<Discount> Add(long id,string name, double value);
 
     Task<GetDiscountResponse> GetAllDiscountAsync(GetDiscountRequest model);
 

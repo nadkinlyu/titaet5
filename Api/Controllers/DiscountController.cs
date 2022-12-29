@@ -32,10 +32,10 @@ public class DiscountController : Microsoft.AspNetCore.Mvc.Controller
 	[Route($"{nameof(Add)}")]
 	[ProducesResponseType(200, Type = typeof(BaseResponse<long>))]
 	[ProducesResponseType(400, Type = typeof(BaseResponse))]
-	[Authorize]
+	//[Authorize]
 	public async Task<BaseResponse<long>> Add([FromBody] AddDiscountRequest model)
 	{
-		var result = await _discount.Add(model.name,model.value);
+		var result = await _discount.Add(model.Id,model.name,model.value);
 		return new BaseResponse<long>(result?.Id ?? 0);
 	}
 
@@ -76,7 +76,7 @@ public class DiscountController : Microsoft.AspNetCore.Mvc.Controller
 	[ProducesResponseType(200, Type = typeof(BaseResponse))]
 	[ProducesResponseType(400, Type = typeof(BaseResponse))]
 	[Authorize]
-	public async Task<BaseResponse> Rename([FromQuery] long id, [FromQuery] string name,double value)
+	public async Task<BaseResponse> Rename([FromQuery] long id,  string name,double value)
 	{
 		await _discount.Update(id, name,value);
 		return new BaseResponse();
@@ -85,12 +85,13 @@ public class DiscountController : Microsoft.AspNetCore.Mvc.Controller
 	/// <summary>
 	///     Удалить факультет
 	/// </summary>
+	/// </summary>
 	/// <returns></returns>
 	[HttpDelete]
 	[Route($"{nameof(Delete)}")]
 	[ProducesResponseType(200, Type = typeof(BaseResponse))]
 	[ProducesResponseType(400, Type = typeof(BaseResponse))]
-	[Authorize]
+	//[Authorize]
 	public async Task<BaseResponse> Delete([FromQuery] long id)
 	{
 		await _discount.DeleteDiscountAsync(id);

@@ -17,14 +17,14 @@ public class DiscountService : IDiscountService
 	{
 		_db = db;
 	}
-	public async Task<Discount> Add(string name, double value )
+	public async Task<Discount> Add(long id, string name, double value )
 	{
 		if (await _db.Discounts.AllAsync(x => x.Value == value))
 			throw new TirException($"Value {value} already exists!", EnumErrorCode.EntityIsAlreadyExists);
 		if (await _db.Discounts.AllAsync(x => x.name == name))
 			throw new TirException($"Name {name} already exists!", EnumErrorCode.EntityIsAlreadyExists);
 		var discont = new Discount
-		{
+		{	Id = id,
 			name = name,
 			Value = value
 		};
@@ -72,10 +72,13 @@ public class DiscountService : IDiscountService
 	}
 	public async Task DeleteDiscountAsync(long id)
 	{
-		if (await _db.Discounts.AnyAsync(x => x.Id == id))
+		//if (await _db.Discounts.AnyAsync(x => x.Id == id))
+		var discount = await _db.Discounts.FirstOrDefaultAsync(x => x.Id == id);
+		if (discount is null)
+
 			throw new TirException("Discount is not exists!", EnumErrorCode.EntityIsNotFound);
 
-		_db.Discounts.Remove(new Discount {Id = id});
+		_db.Discounts.Remove(discount);
 		await _db.SaveChangesAsync();
 	}
 }

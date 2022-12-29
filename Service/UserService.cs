@@ -32,9 +32,11 @@ public class UserService : IUserService
 			throw new TirException(EnumErrorCode.EmailAreRequired);
 
 		var user = await _db.Users.FirstOrDefaultAsync(x => x.Email == request.Email.ToLower());
-		if (user == null || user.Status is EnumUserStatus.New or EnumUserStatus.Blocked)
-			throw new TirException(EnumErrorCode.AccessDenied);
-
+		if (user == null )
+			
+			throw new TirException("нету мыла",EnumErrorCode.AccessDenied);
+		if (user.Status is EnumUserStatus.New or EnumUserStatus.Blocked)
+			throw new TirException("новый",EnumErrorCode.AccessDenied);
 		if (user.PasswordHash != PasswordHashService.GetHashPassword(request.Password, user.PasswordKey))
 			throw new TirException("Password are incorrect", EnumErrorCode.AccessDenied);
 
@@ -53,7 +55,7 @@ public class UserService : IUserService
 	{
 		if (await _db.Users.AnyAsync(x => x.Email == request.Email))
 			throw new TirException(EnumErrorCode.MailIsAlreadyInUse);
-
+////н
 		if (string.IsNullOrWhiteSpace(request.Email))
 			throw new TirException(EnumErrorCode.EmailAreRequired);
 

@@ -9,8 +9,8 @@ namespace Service;
 public class MailService
 {
  
-	private static string From => "nad@gmail.com";
-	private static string Password => "cfo8R21se93HGm";
+	private static string From => "ndly12@yandex.ru";
+	private static string Password => "Ytrjulf123";
 
 	private static readonly string BaseDir = Directory.GetCurrentDirectory();
 
@@ -23,10 +23,10 @@ public class MailService
 		new()
 		{
 			{
-				"registered", ($@"{BaseDir}\wwwroot\EmailTriggers\registered.html", "Welcome")
+				"registered", ($@"{BaseDir}\EmailTriggers\registered.html", "Welcome")
 			},
 			{
-				"addReviewer",($@"{BaseDir}\wwwroot\EmailTriggers\addreviewer.html", "You were attached as a publication reviewer!")
+				"addReviewer",($@"{BaseDir}\EmailTriggers\addreviewer.html", "You were attached as a publication reviewer!")
 			}
 		};
 
@@ -63,14 +63,14 @@ public class MailService
 
 			var client = new SmtpClient
 			{
-				Host = "smtp.gmail.com",
+				Host = "smtp.yandex.ru",
 				//#if DEBUG
 				//EnableSsl = false,
 				//#else
 				EnableSsl = true,
 				//#endif
 				Port = 587,
-				//UseDefaultCredentials = false,
+				UseDefaultCredentials = false,
 				Credentials = new NetworkCredential(From, Password),
 				//DeliveryMethod = SmtpDeliveryMethod.Network
 			};
@@ -78,8 +78,7 @@ public class MailService
 		}
 		catch (Exception)
 		{
-			
-			//_logger.Info("GMail not sent error:"+e.Message);
+			// ignored
 		}
 	}
 

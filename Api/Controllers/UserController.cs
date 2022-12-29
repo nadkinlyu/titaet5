@@ -3,7 +3,7 @@ using Service;
 using Service.Model;
 using Service.Model.User;
 
-namespace PublishingHouse.Controller;
+namespace Api.Controllers;
 
 /// <summary>
 /// Авторизация
@@ -16,7 +16,7 @@ public class AuthController : Microsoft.AspNetCore.Mvc.Controller
 	[Route($"{nameof(Login)}")]
 	[ProducesResponseType(200, Type = typeof(BaseResponse<UserResponse>))]
 	[ProducesResponseType(400, Type = typeof(BaseResponse))]
-	public async Task<BaseResponse<UserResponse>> Login([FromServices] IUserService auth, [FromBody] UserRequest request)
+	public async Task<BaseResponse<UserResponse>> Login([FromServices] IUserService auth, [FromQuery] UserRequest request)
 	{
 		return await auth.Login(request);
 	}
@@ -25,7 +25,7 @@ public class AuthController : Microsoft.AspNetCore.Mvc.Controller
 	[Route($"{nameof(Register)}")]
 	[ProducesResponseType(200, Type = typeof(BaseResponse))]
 	[ProducesResponseType(400, Type = typeof(BaseResponse))]
-	public async Task<BaseResponse> Register([FromServices] IUserService auth, [FromBody] RegisterRequest request)
+	public async Task<BaseResponse> Register([FromServices] IUserService auth, [FromQuery] RegisterRequest request)
 	{
 		return await auth.Register(request);
 	}
